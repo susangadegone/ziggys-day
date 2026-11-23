@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes bubbleIn {
+  from { opacity: 0; transform: translateY(10px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes shakeStage {
+  0%   { transform: translateX(0); }
+  15%  { transform: translateX(-9px); }
+  30%  { transform: translateX(8px); }
+  45%  { transform: translateX(-7px); }
+  60%  { transform: translateX(6px); }
+  75%  { transform: translateX(-4px); }
+  90%  { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+@keyframes logIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes vetoFlash {
+  0%   { opacity: 0; }
+  20%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.bubble-in   { animation: bubbleIn 350ms ease-out both; }
+.stage-shake { animation: shakeStage 650ms ease-in-out both; }
+.floaty      { animation: floaty 2.4s ease-in-out infinite; }
+.log-in      { animation: logIn 300ms ease-out both; }
+.veto-flash  { animation: vetoFlash 650ms ease-out both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bubble-in, .stage-shake, .floaty, .log-in, .veto-flash {
+    animation: none !important;
+  }
+}

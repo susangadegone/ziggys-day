@@ -1,0 +1,18 @@
+{"id":"0-0","turn":1,"agent":"sunny","stance":"Proposes full adventure day","veto":false,"consensus":0.15,"text":"Beach at nine, the long trail at eleven, dog park at two. It's a perfect day and I have it color-coded."}
+{"id":"0-1","turn":1,"agent":"couch","stance":"Proposes calm day at home","veto":false,"consensus":0.15,"text":"Dough has a deadline at five. A calm day at home protects it. That's the entire plan."}
+{"id":"0-2","turn":1,"agent":"ziggy","stance":"States needs: exercise, smells, no rushing","veto":false,"consensus":0.15,"text":"I'd like a real walk, a lot of smelling, and nobody hurrying me. Beyond that I have no notes."}
+{"id":"1-0","turn":2,"agent":"sunny","stance":"Defends three-stop itinerary","veto":false,"consensus":0.3,"text":"Three stops isn't rushing. Three stops is momentum."}
+{"id":"1-1","turn":2,"agent":"couch","stance":"Flags deadline risk","veto":false,"consensus":0.3,"text":"Three stops is three car rides, three leashes, and three chances Dough misses his deadline."}
+{"id":"1-2","turn":2,"agent":"ziggy","stance":"Objects to pace","veto":false,"consensus":0.3,"text":"Momentum is what people call it when the dog isn't allowed to finish smelling."}
+{"id":"2-0","turn":3,"agent":"sunny","stance":"Concedes: drops dog park","veto":false,"consensus":0.45,"text":"Fine. Two stops. Trail and beach. I'll drop the park."}
+{"id":"2-1","turn":3,"agent":"couch","stance":"Counters: backyard only","veto":false,"consensus":0.45,"text":"Backyard. Twenty minutes. Dough keeps his morning."}
+{"id":"2-2","turn":3,"agent":"ziggy","stance":"Rejects backyard","veto":false,"consensus":0.45,"text":"A backyard is a place I've already smelled. Try again."}
+{"id":"3-0","turn":4,"agent":"sunny","stance":"Re-proposes full-day loop","veto":false,"consensus":0.4,"text":"Then the full loop: trail, beach, lunch on the pier, back by dark."}
+{"id":"3-1","turn":4,"agent":"couch","stance":"Objects to evening return","veto":false,"consensus":0.4,"text":"Back by dark means Dough works at midnight. I object, quietly, on his behalf."}
+{"id":"3-2","turn":4,"agent":"ziggy","stance":"VETO: all-day loop","veto":true,"consensus":0.4,"text":"Veto. A day made of driving is a delivery, not a day. Start over, and this time ask me."}
+{"id":"4-0","turn":5,"agent":"ziggy","stance":"Sets terms","veto":false,"consensus":0.75,"text":"Terms: one long trail walk, sniffing unlimited, home by noon. Then I nap on whoever is working."}
+{"id":"4-1","turn":5,"agent":"couch","stance":"Accepts: protected work block","veto":false,"consensus":0.75,"text":"Home by noon, quiet from one to five. Deadline protected. I accept."}
+{"id":"4-2","turn":5,"agent":"sunny","stance":"Proposes sunset beach as bonus","veto":false,"consensus":0.75,"text":"Beach at sunset, thirty minutes, as a bonus. Not a stop. A bonus."}
+{"id":"5-0","turn":6,"agent":"sunny","stance":"Agrees","veto":false,"consensus":0.95,"text":"A trail, a nap, a sunset. I'd have color-coded it differently, but fine."}
+{"id":"5-1","turn":6,"agent":"couch","stance":"Approves final plan","veto":false,"consensus":0.95,"text":"Dough works, Ziggy sleeps, nobody drives for four hours. Approved."}
+{"id":"5-2","turn":6,"agent":"ziggy","stance":"Signs off","veto":false,"consensus":0.95,"text":"Smells, exercise, no rushing. Signed. Pawed. Whatever counts."}
