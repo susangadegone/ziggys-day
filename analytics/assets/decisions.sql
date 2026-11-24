@@ -7,8 +7,8 @@ materialization:
 
 @bruin */
 
--- Replace the path below with the FULL path to your decisions.jsonl.
--- Mac example: /Users/yourname/Desktop/hackathon/ziggys-day/decisions.jsonl
+-- Reads decisions.jsonl from the repo root. Run bruin from the repo root:
+--   bruin run analytics
 SELECT
   run_id,
   mode,
@@ -21,4 +21,4 @@ SELECT
   agreement,
   consensus,
   text
-FROM read_json_auto('/FULL/PATH/TO/ziggys-day/decisions.jsonl')
+FROM read_json_auto('decisions.jsonl')

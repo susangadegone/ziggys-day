@@ -3,6 +3,13 @@ node_modules
 .env*.local
 *.tsbuildinfo
 next-env.d.ts
-*.duckdb
 .DS_Store
 decisions.old-cast.jsonl
+
+# Bruin
+.bruin.yml
+*.duckdb
+*.duckdb.wal
+logs/
+__pycache__/
+*.py[cod]

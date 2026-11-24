@@ -1,0 +1,5 @@
+name: ziggys-analytics
+catchup: false
+
+default_connections:
+    duckdb: "duckdb-default"

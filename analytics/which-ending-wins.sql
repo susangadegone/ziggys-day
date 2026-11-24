@@ -1,6 +1,6 @@
 -- The last scene of the film. Screenshot this result.
--- Run after `bruin run ziggys-analytics`, from the bruin folder:
---   bruin query --connection duckdb-default --query "$(cat /path/to/which-ending-wins.sql)"
+-- Run after `bruin run analytics`, from the ziggys-day folder:
+--   bruin query --connection duckdb-default --query "$(cat analytics/which-ending-wins.sql)"
 -- Each run's winner is the character who ended it most satisfied.
 WITH final_mood AS (
   SELECT run_id, agent, arg_max(agreement, turn) AS final_agreement

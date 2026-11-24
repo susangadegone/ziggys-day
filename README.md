@@ -22,16 +22,15 @@ clicking through.
 - `app/globals.css`: all animation.
 - `public/art/`: optional images, exact lowercase names: angie.png, rob.png,
   ziggy.png, living-room.png. Missing files fall back to built-in drawings.
-- `analytics/`: the two Bruin SQL files.
+- `analytics/`: the Bruin pipeline (see below).
 
 ## Bruin (run after decisions.jsonl exists)
 
+`analytics/` is a ready-to-run Bruin pipeline that loads `decisions.jsonl`
+into DuckDB (`analytics/ziggy.duckdb`). Run everything from this folder.
+
 1. Install: `curl -LsSf https://getbruin.com/install/cli | sh`
-2. Next to this folder: `bruin init default ziggys-analytics`
-3. Delete the three sample assets that init creates. Copy
-   `analytics/decisions.sql` into the new pipeline's `assets/` folder.
-4. In that file, replace `/FULL/PATH/TO/...` with the full path to
-   `decisions.jsonl`.
-5. `bruin validate`, then `bruin run`.
-6. For the last scene, run the query in `analytics/which-ending-wins.sql`
-   and screenshot the result.
+2. First time only: `cp bruin.example.yml .bruin.yml`
+3. `bruin validate analytics`, then `bruin run analytics`
+4. For the last scene, run the final query and screenshot the result:
+   `bruin query --connection duckdb-default --query "$(cat analytics/which-ending-wins.sql)"`
