@@ -1,6 +1,6 @@
 # Ziggy's Day
 
-A 90-second animated film in the browser. Three agents negotiate one dog's day.
+A short animated film in the browser. Angie and Rob decide how to spend the day with their dog Ziggy, who reacts to every idea. All three are live AI agents, so every run ends differently.
 
 ## Run it (VS Code)
 
@@ -20,9 +20,8 @@ clicking through.
 - `lib/agents.ts`: names, colors, screen positions.
 - `components/`: Stage, CharacterSlot, SpeechBubble, DecisionLog.
 - `app/globals.css`: all animation.
-- `public/art/`: optional images. Exact lowercase names: angie.png, dough.png,
-  ziggy.png, sunny.png, couch.png, ziggy-prime.png, living-room.png.
-  Missing files fall back to built-in drawings.
+- `public/art/`: optional images, exact lowercase names: angie.png, rob.png,
+  ziggy.png, living-room.png. Missing files fall back to built-in drawings.
 - `analytics/`: the two Bruin SQL files.
 
 ## Bruin (run after decisions.jsonl exists)

@@ -6,7 +6,7 @@ export default function Home() {
       <header className="mb-4">
         <h1 className="text-2xl font-bold tracking-tight">Ziggy&apos;s Day</h1>
         <p className="text-sm text-stone-400">
-          Three agents argue about one dog&apos;s day. Press Next, Space or the right arrow.
+          Angie and Rob decide how to spend the day with Ziggy, who reacts to every idea. Press Start, then Next or Space.
         </p>
       </header>
       <Stage />

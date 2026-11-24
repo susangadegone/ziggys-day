@@ -1,13 +1,21 @@
-// THE SPINE. Every line of dialogue, stance, consensus value and the final
-// decision lives here. Nothing else in the app contains dialogue.
+// Cast, actions, and the SCRIPTED FALLBACK used only when no model key is set.
+// With a key, the agents improvise every line live (see lib/personas.ts).
 
-export type AgentId = "sunny" | "couch" | "ziggy";
+export type AgentId = "angie" | "rob" | "ziggy";
+
+// Every line comes with a physical action, which the stage animates.
+export const ADULT_ACTIONS = ["excited", "firm", "annoyed", "concede", "happy", "thinking"] as const;
+export const DOG_ACTIONS = ["door", "sniff", "bark", "sulk", "wag", "flop", "zoomies"] as const;
+export type Action = (typeof ADULT_ACTIONS)[number] | (typeof DOG_ACTIONS)[number];
+
+import type { PlaceId } from "./world";
 
 export interface Line {
   agent: AgentId;
-  text: string;
+  place: PlaceId; // where the character heads while saying/doing this
+  text: string; // adults speak; Ziggy's text is an *action* description
   stance: string; // short label for the log panel
-  veto?: boolean; // Ziggy Prime exercising veto: shakes the stage
+  action: Action;
 }
 
 export interface Turn {
@@ -23,21 +31,12 @@ export const SCRIPT: Turn[] = [
     title: "Opening bids",
     consensus: 0.15,
     lines: [
-      {
-        agent: "sunny",
-        text: "Beach at nine, the long trail at eleven, dog park at two. It's a perfect day and I have it color-coded.",
-        stance: "Proposes full adventure day",
-      },
-      {
-        agent: "couch",
-        text: "Dough has a deadline at five. A calm day at home protects it. That's the entire plan.",
-        stance: "Proposes calm day at home",
-      },
-      {
-        agent: "ziggy",
-        text: "I'd like a real walk, a lot of smelling, and nobody hurrying me. Beyond that I have no notes.",
-        stance: "States needs: exercise, smells, no rushing",
-      },
+      { agent: "angie", place: "beach", action: "excited", stance: "Proposes full adventure day",
+        text: "Beach at nine, the long trail at eleven, dog park at two. Perfect day, and I've color-coded it." },
+      { agent: "rob", place: "home", action: "firm", stance: "Proposes calm day at home",
+        text: "I have a deadline at five. A calm day at home protects it. That's the entire plan." },
+      { agent: "ziggy", place: "trail", action: "door", stance: "Wants out, now",
+        text: "*sprints to the door and sits, staring hard at the leash*" },
     ],
   },
   {
@@ -45,21 +44,12 @@ export const SCRIPT: Turn[] = [
     title: "Pushback",
     consensus: 0.3,
     lines: [
-      {
-        agent: "sunny",
-        text: "Three stops isn't rushing. Three stops is momentum.",
-        stance: "Defends three-stop itinerary",
-      },
-      {
-        agent: "couch",
-        text: "Three stops is three car rides, three leashes, and three chances Dough misses his deadline.",
-        stance: "Flags deadline risk",
-      },
-      {
-        agent: "ziggy",
-        text: "Momentum is what people call it when the dog isn't allowed to finish smelling.",
-        stance: "Objects to pace",
-      },
+      { agent: "angie", place: "park", action: "firm", stance: "Defends three-stop itinerary",
+        text: "Three stops isn't rushing. Three stops is momentum." },
+      { agent: "rob", place: "home", action: "annoyed", stance: "Flags deadline risk",
+        text: "Three stops is three car rides and three chances I miss my deadline." },
+      { agent: "ziggy", place: "trail", action: "sniff", stance: "Refuses to be hurried",
+        text: "*plants his nose in the first bush by the door and will not be rushed*" },
     ],
   },
   {
@@ -67,66 +57,38 @@ export const SCRIPT: Turn[] = [
     title: "First compromises",
     consensus: 0.45,
     lines: [
-      {
-        agent: "sunny",
-        text: "Fine. Two stops. Trail and beach. I'll drop the park.",
-        stance: "Concedes: drops dog park",
-      },
-      {
-        agent: "couch",
-        text: "Backyard. Twenty minutes. Dough keeps his morning.",
-        stance: "Counters: backyard only",
-      },
-      {
-        agent: "ziggy",
-        text: "A backyard is a place I've already smelled. Try again.",
-        stance: "Rejects backyard",
-      },
+      { agent: "angie", place: "trail", action: "concede", stance: "Concedes: drops dog park",
+        text: "Fine. Two stops. Trail and beach. I'll drop the park." },
+      { agent: "rob", place: "home", action: "firm", stance: "Counters: backyard only",
+        text: "Backyard. Twenty minutes. I keep my morning." },
+      { agent: "ziggy", place: "home", action: "sulk", stance: "Rejects backyard",
+        text: "*looks at the backyard, looks at Rob, lies down with a long sigh*" },
     ],
   },
   {
     turn: 4,
-    title: "The veto",
+    title: "The protest",
     consensus: 0.4,
     lines: [
-      {
-        agent: "sunny",
-        text: "Then the full loop: trail, beach, lunch on the pier, back by dark.",
-        stance: "Re-proposes full-day loop",
-      },
-      {
-        agent: "couch",
-        text: "Back by dark means Dough works at midnight. I object, quietly, on his behalf.",
-        stance: "Objects to evening return",
-      },
-      {
-        agent: "ziggy",
-        text: "Veto. A day made of driving is a delivery, not a day. Start over, and this time ask me.",
-        stance: "VETO: all-day loop",
-        veto: true,
-      },
+      { agent: "angie", place: "beach", action: "excited", stance: "Re-proposes full-day loop",
+        text: "Then the full loop: trail, beach, lunch on the pier, back by dark." },
+      { agent: "rob", place: "home", action: "annoyed", stance: "Objects to evening return",
+        text: "Back by dark means I work at midnight. No." },
+      { agent: "ziggy", place: "trail", action: "bark", stance: "Protests: a walk, not a road trip",
+        text: "*barks once, loudly, and drops his leash on Rob's feet*" },
     ],
   },
   {
     turn: 5,
-    title: "Ziggy sets terms",
+    title: "Reading Ziggy",
     consensus: 0.75,
     lines: [
-      {
-        agent: "ziggy",
-        text: "Terms: one long trail walk, sniffing unlimited, home by noon. Then I nap on whoever is working.",
-        stance: "Sets terms",
-      },
-      {
-        agent: "couch",
-        text: "Home by noon, quiet from one to five. Deadline protected. I accept.",
-        stance: "Accepts: protected work block",
-      },
-      {
-        agent: "sunny",
-        text: "Beach at sunset, thirty minutes, as a bonus. Not a stop. A bonus.",
-        stance: "Proposes sunset beach as bonus",
-      },
+      { agent: "angie", place: "trail", action: "thinking", stance: "Reads Ziggy: one long walk",
+        text: "He wants one long walk, not a tour. Trail only, unlimited sniffing, home by noon?" },
+      { agent: "rob", place: "home", action: "concede", stance: "Accepts: protected work block",
+        text: "Home by noon, quiet from one to five. Deadline protected. I accept." },
+      { agent: "ziggy", place: "trail", action: "wag", stance: "Approves the trail",
+        text: "*tail going in full circles, already halfway out the door*" },
     ],
   },
   {
@@ -134,26 +96,17 @@ export const SCRIPT: Turn[] = [
     title: "Decision",
     consensus: 0.95,
     lines: [
-      {
-        agent: "sunny",
-        text: "A trail, a nap, a sunset. I'd have color-coded it differently, but fine.",
-        stance: "Agrees",
-      },
-      {
-        agent: "couch",
-        text: "Dough works, Ziggy sleeps, nobody drives for four hours. Approved.",
-        stance: "Approves final plan",
-      },
-      {
-        agent: "ziggy",
-        text: "Smells, exercise, no rushing. Signed. Pawed. Whatever counts.",
-        stance: "Signs off",
-      },
+      { agent: "angie", place: "beach", action: "happy", stance: "Adds sunset beach bonus",
+        text: "And thirty minutes of sunset beach as a bonus. Not a stop. A bonus." },
+      { agent: "rob", place: "home", action: "happy", stance: "Approves final plan",
+        text: "A trail, a nap, a sunset. Approved." },
+      { agent: "ziggy", place: "home", action: "flop", stance: "Signs off with a nap",
+        text: "*flops onto Rob's feet and is asleep before anyone can move*" },
     ],
   },
 ];
 
-// One beat is one spoken line. The Next button walks this array.
+// One beat is one line. The Next button walks this array.
 export interface Beat {
   turnIndex: number;
   turn: number;
@@ -174,18 +127,20 @@ export const BEATS: Beat[] = SCRIPT.flatMap((t, turnIndex) =>
 
 export const TOTAL_BEATS = BEATS.length; // 18
 
-// The final decision record, printed in the log panel at the end.
+// The scripted final decision record.
 export const FINAL_DECISION = {
-  plan: "One long trail walk with unlimited sniffing, home by noon. Quiet work block for Dough from 1 to 5 while Ziggy naps. Thirty minutes of sunset beach as a bonus.",
+  plan: "One long trail walk with unlimited sniffing, home by noon. Quiet work block for Rob from 1 to 5 while Ziggy naps. Thirty minutes of sunset beach as a bonus.",
   timeline: [
-    { time: "8:30", what: "Trail walk, Ziggy sets the pace" },
-    { time: "11:45", what: "Home" },
-    { time: "1:00–5:00", what: "Dough's work block, Ziggy naps" },
-    { time: "5:45", what: "Sunset beach, 30 minutes" },
+    { time: "8:30", what: "Trail walk, Ziggy sets the pace", place: "trail" },
+    { time: "11:45", what: "Home", place: "home" },
+    { time: "1:00–5:00", what: "Rob's work block, Ziggy naps", place: "home" },
+    { time: "5:45", what: "Sunset beach, 30 minutes", place: "beach" },
   ],
+  winner: "ziggy",
+  why: "The whole day was built around his one long walk and his nap.",
   satisfaction: [
-    { agent: "sunny" as AgentId, score: 0.78 },
-    { agent: "couch" as AgentId, score: 0.82 },
-    { agent: "ziggy" as AgentId, score: 0.92 },
+    { agent: "angie" as AgentId, score: 0.8 },
+    { agent: "rob" as AgentId, score: 0.85 },
+    { agent: "ziggy" as AgentId, score: 0.95 },
   ],
 };

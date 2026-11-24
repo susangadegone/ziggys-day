@@ -1,14 +1,22 @@
 import { AGENTS } from "@/lib/agents";
-import { SCRIPT, type Beat } from "@/lib/script";
+import type { AgentId } from "@/lib/script";
 
-export default function SpeechBubble({ beat }: { beat: Beat }) {
-  const agent = AGENTS[beat.line.agent];
-  const key = `${beat.turnIndex}-${beat.lineIndex}`;
+export interface ShownLine {
+  key: string;
+  turn: number;
+  title: string;
+  agent: AgentId;
+  text: string;
+}
+
+export default function SpeechBubble({ line, thinking }: { line: ShownLine; thinking?: boolean }) {
+  const agent = AGENTS[line.agent];
+  const isDog = agent.kind === "dog";
 
   return (
-    <div key={key} className="bubble-in absolute inset-x-0 top-5 z-30">
+    <div key={line.key + (thinking ? "-t" : "")} className="bubble-in absolute inset-x-0 top-5 z-30">
       <div
-        className="mx-[4%] rounded-2xl border-2 bg-white/95 px-5 py-4 shadow-lg"
+        className={`mx-[4%] rounded-2xl border-2 px-5 py-4 shadow-lg ${isDog ? "border-dashed bg-purple-50/95" : "bg-white/95"}`}
         style={{ borderColor: agent.color }}
       >
         <div
@@ -16,18 +24,24 @@ export default function SpeechBubble({ beat }: { beat: Beat }) {
           style={{ color: agent.color }}
         >
           {agent.name}
-          {beat.line.veto && (
-            <span className="rounded bg-purple-700 px-1.5 py-0.5 text-white">VETO</span>
-          )}
+          {isDog && <span className="font-normal normal-case text-stone-500">(reacts)</span>}
           <span className="ml-auto text-stone-400">
-            Turn {beat.turn} · {SCRIPT[beat.turnIndex].title}
+            Round {line.turn} · {line.title}
           </span>
         </div>
-        <p className="text-lg leading-snug text-stone-900">{beat.line.text}</p>
+        {thinking ? (
+          <p className="text-lg italic leading-snug text-stone-400">
+            {isDog ? "watching…" : "thinking…"}
+          </p>
+        ) : (
+          <p className={`text-lg leading-snug text-stone-900 ${isDog ? "italic" : ""}`}>
+            {isDog ? line.text.replace(/^\*|\*$/g, "") : line.text}
+          </p>
+        )}
       </div>
       {/* Tail pointing at the speaker's column */}
       <span
-        className="absolute -bottom-2 h-4 w-4 border-b-2 border-r-2 bg-white"
+        className={`absolute -bottom-2 h-4 w-4 border-b-2 border-r-2 ${isDog ? "bg-purple-50" : "bg-white"}`}
         style={{
           left: agent.left,
           borderColor: agent.color,

@@ -10,9 +10,15 @@ materialization:
 -- Replace the path below with the FULL path to your decisions.jsonl.
 -- Mac example: /Users/yourname/Desktop/hackathon/ziggys-day/decisions.jsonl
 SELECT
+  run_id,
+  mode,
+  twist,
+  turn,
   agent,
   stance,
-  veto,
+  action,
+  place,
+  agreement,
   consensus,
-  turn
+  text
 FROM read_json_auto('/FULL/PATH/TO/ziggys-day/decisions.jsonl')

@@ -2,18 +2,28 @@
 
 import { useEffect, useRef } from "react";
 import { AGENTS } from "@/lib/agents";
-import { FINAL_DECISION, TOTAL_BEATS } from "@/lib/script";
+import type { AgentId } from "@/lib/script";
 import type { LogEntry } from "@/lib/log";
+
+export interface FinalRecord {
+  plan: string;
+  timeline: { time: string; what: string }[];
+  satisfaction: { agent: AgentId; score: number }[];
+  winner?: string;
+  why?: string;
+  twist: string;
+}
 
 export default function DecisionLog({
   entries,
-  finished,
+  final,
   onDownload,
 }: {
   entries: LogEntry[];
-  finished: boolean;
+  final: FinalRecord | null;
   onDownload: () => void;
 }) {
+  const finished = !!final;
   const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,7 +39,7 @@ export default function DecisionLog({
           <div className="font-mono text-xs text-stone-400">decisions.jsonl</div>
         </div>
         <div className="text-xs text-stone-400">
-          {entries.length}/{TOTAL_BEATS} lines
+          {entries.length} lines
         </div>
       </div>
 
@@ -47,29 +57,41 @@ export default function DecisionLog({
                   <span className="font-semibold" style={{ color: a.color }}>
                     {a.name}
                   </span>
-                  {e.veto && (
-                    <span className="rounded bg-purple-700 px-1.5 py-0.5 text-[10px] font-bold text-white">
-                      VETO
-                    </span>
-                  )}
+                  <span className="rounded bg-stone-700 px-1.5 py-0.5 text-[10px] text-stone-300">
+                    {e.action} · {e.place}
+                  </span>
                   <span className="ml-auto font-mono text-xs text-stone-400">
                     {e.consensus.toFixed(2)}
                   </span>
                 </div>
-                <div className="mt-0.5 text-stone-300">{e.stance}</div>
+                <div className="mt-0.5 flex text-stone-300">
+                  <span>{e.stance}</span>
+                  <span className="ml-auto pl-2 font-mono text-[10px] text-stone-500" title="This agent's own satisfaction">
+                    {Math.round(e.agreement * 100)}%
+                  </span>
+                </div>
               </li>
             );
           })}
         </ul>
 
-        {finished && (
+        {final && (
           <div className="log-in mt-3 rounded-xl border border-emerald-600/60 bg-emerald-950/40 p-3 text-sm">
             <div className="mb-1 font-semibold text-emerald-300">Final decision record</div>
-            <p className="text-stone-200">{FINAL_DECISION.plan}</p>
+            <p className="text-stone-200">{final.plan}</p>
+            {final.winner && AGENTS[final.winner as AgentId] && (
+              <p className="mt-1 text-xs text-stone-300">
+                Day goes to{" "}
+                <span className="font-semibold" style={{ color: AGENTS[final.winner as AgentId].color }}>
+                  {AGENTS[final.winner as AgentId].name}
+                </span>
+                {final.why ? `: ${final.why}` : ""}
+              </p>
+            )}
             <table className="mt-2 w-full text-xs text-stone-300">
               <tbody>
-                {FINAL_DECISION.timeline.map((t) => (
-                  <tr key={t.time}>
+                {final.timeline.map((t) => (
+                  <tr key={t.time + t.what}>
                     <td className="py-0.5 pr-2 font-mono text-stone-400">{t.time}</td>
                     <td>{t.what}</td>
                   </tr>
@@ -77,7 +99,7 @@ export default function DecisionLog({
               </tbody>
             </table>
             <div className="mt-3 space-y-1.5">
-              {FINAL_DECISION.satisfaction.map((s) => {
+              {final.satisfaction.map((s) => {
                 const a = AGENTS[s.agent];
                 return (
                   <div key={s.agent} className="flex items-center gap-2 text-xs">
